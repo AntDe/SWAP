@@ -1,4 +1,4 @@
-package net.degrendel;
+package net.degrendel.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

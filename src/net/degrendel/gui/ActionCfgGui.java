@@ -1,4 +1,4 @@
-package net.degrendel;
+package net.degrendel.gui;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -6,6 +6,9 @@ import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import net.degrendel.ActionCfg;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.Container;

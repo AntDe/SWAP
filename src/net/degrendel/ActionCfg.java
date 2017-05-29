@@ -51,7 +51,7 @@ public class ActionCfg {
 	}
 
 	public String[] getURIs(String appnumber) {
-		String[] linksArr = this.getLink().replaceAll("\\{appNum\\}",appnumber).split(" +");
+		String[] linksArr = this.getLink().replaceAll("\\{appNum\\}", appnumber).split(" +");
 		return linksArr;
 	}
 

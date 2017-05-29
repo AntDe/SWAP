@@ -1,4 +1,4 @@
-package net.degrendel;
+package net.degrendel.gui;
 
 import javax.swing.JPanel;
 import java.util.Iterator;
@@ -9,6 +9,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import net.degrendel.ActionCfg;
+import net.degrendel.ActionCfgList;
+import net.degrendel.StartWebApp;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;

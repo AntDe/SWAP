@@ -1,4 +1,4 @@
-package net.degrendel;
+package net.degrendel.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+
+import net.degrendel.ActionCfgList;
+import net.degrendel.StartWebApp;
 
 @SuppressWarnings("serial")
 public class ConfigDialog extends JDialog {

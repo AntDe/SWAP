@@ -1,28 +1,26 @@
 package net.degrendel;
 
-import java.awt.EventQueue;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JFrame;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingUtilities;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamPicker;
-import com.google.zxing.Result;
-
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -36,29 +34,28 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UnsupportedLookAndFeelException;
 
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPicker;
+import com.google.zxing.Result;
+
+import net.degrendel.gui.AboutDialog;
+import net.degrendel.gui.ConfigDialog;
+import net.degrendel.gui.ScanJpanel;
 
 public class StartWebApp {
 
@@ -107,6 +104,10 @@ public class StartWebApp {
 	};
 
 	static final String PREF_FILE_NAME = "StartWebApp/StartWebApp.cfg";
+	private JPanel mainPanel;
+	private JButton btnScan;
+	private JLabel lblApplicationNumber;
+	private JButton btnCopy;
 
 	/**
 	 * Launch the application.
@@ -171,6 +172,14 @@ public class StartWebApp {
 	}
 
 	private void initButtonPanel() {
+
+		btnCopy = new JButton("Copy");
+		btnCopy.addMouseListener(mousePopupListner);
+		btnCopy.setAction(actionCopy);
+
+		mainPanel.add(btnCopy);
+		mainPanel.add(buttonPanel);
+
 		this.buttonPanel.removeAll();
 		// get Action Config
 		this.actionCfgList = getActionCfgList();
@@ -282,46 +291,27 @@ public class StartWebApp {
 		frmAppStartApp.setBounds(100, 100, 460, 69);
 		frmAppStartApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JLabel lblApplicationNumber = new JLabel("Application number:");
+		mainPanel = new JPanel();
+
+		btnScan = new JButton("Scan");
+		btnScan.addMouseListener(mousePopupListner);
+		mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		btnScan.setAction(actionScan);
+
+		lblApplicationNumber = new JLabel("Application number:");
 
 		textFieldAppNum = new JTextField();
 		textFieldAppNum.addMouseListener(mousePopupListner);
 		textFieldAppNum.setColumns(10);
-
-		JButton btnScan = new JButton("Scan");
-		btnScan.addMouseListener(mousePopupListner);
-		btnScan.setAction(actionScan);
-
-		JButton btnCopy = new JButton("Copy");
-		btnCopy.addMouseListener(mousePopupListner);
-		btnCopy.setAction(actionCopy);
-		GroupLayout groupLayout = new GroupLayout(frmAppStartApp.getContentPane());
-		groupLayout
-				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(btnScan)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblApplicationNumber)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(textFieldAppNum, GroupLayout.PREFERRED_SIZE, 119,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnCopy)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(buttonPanel, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-								.addContainerGap()));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addContainerGap()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(buttonPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(lblApplicationNumber)
-								.addComponent(textFieldAppNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnScan, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addComponent(btnCopy)))
-				.addContainerGap()));
 		buttonPanel.setBorder(null);
 		buttonPanel.addMouseListener(mousePopupListner);
 		buttonPanel.setLayout(new GridLayout(1, 0, 0, 0));
-		frmAppStartApp.getContentPane().setLayout(groupLayout);
+
+		mainPanel.add(btnScan);
+		mainPanel.add(lblApplicationNumber);
+		mainPanel.add(textFieldAppNum);
+
+		frmAppStartApp.getContentPane().add(mainPanel);
 	}
 
 	private void showPopup(MouseEvent e) {
