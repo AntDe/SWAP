@@ -5,6 +5,7 @@ public class ActionCfg {
 	private String name;
 	private String link;
 	private Boolean toCopy = false;
+	private Boolean forceScan = false;
 
 	public ActionCfg(String name, String link) {
 		super();
@@ -48,6 +49,20 @@ public class ActionCfg {
 
 	public void setToCopy(Boolean toCopy) {
 		this.toCopy = toCopy;
+	}
+
+	/**
+	 * @return the forceScan
+	 */
+	public Boolean getForceScan() {
+		return forceScan;
+	}
+
+	/**
+	 * @param forceScan the forceScan to set
+	 */
+	public void setForceScan(Boolean forceScan) {
+		this.forceScan = forceScan;
 	}
 
 	public String[] getURIs(String appnumber) {

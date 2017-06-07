@@ -49,6 +49,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.google.zxing.Result;
@@ -67,7 +70,7 @@ public class StartWebApp {
 	private Action actionCopy = new AbstractAction("Copy") {
 		public void actionPerformed(ActionEvent arg0) {
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-			StringSelection strSel = new StringSelection(getAppnumber());
+			StringSelection strSel = new StringSelection(getAppnumber(false));
 			clipboard.setContents(strSel, null);
 		}
 	};
@@ -256,23 +259,12 @@ public class StartWebApp {
 		dec = new XMLDecoder(new BufferedInputStream(inputStream));
 		actionCfgList = (ActionCfgList) dec.readObject();
 		dec.close();
-
-		// ActionCfgList actionCfgList = new ActionCfgList();
-		// actionCfgList.addActionCfg("muse", "http://q/muse:{appNum}");
-		// actionCfgList.addActionCfg("Edrex", "http://q/edrex:{appNum}");
-		// actionCfgList.addActionCfg("EdrexWork",
-		// "http://edrex.internal.epo.org/internal/preview/edrex.pdf?apnr={appNum}&requester=muse&clean=false&skipUnmodifiedPages=false");
-		// actionCfgList.addActionCfg("Ansera",
-		// "http://ansera/#/application/{appNum}");
-		// actionCfgList.addActionCfg("DI+", "http://q/{appNum}");
-		// actionCfgList.addActionCfg("XML",
-		// "http://fnb-sis-p.internal.epo.org/search-input-service/applications/{appNum}");
 		return actionCfgList;
 	}
 
-	private String getAppnumber() {
+	private String getAppnumber(Boolean forceScan) {
 		String appNum = textFieldAppNum.getText();
-		if ((appNum == null) | (appNum.equals(""))) {
+		if (forceScan || (appNum == null) || (appNum.equals(""))) {
 			this.actionScan.actionPerformed(null);
 			appNum = textFieldAppNum.getText();
 		}
@@ -353,16 +345,18 @@ public class StartWebApp {
 		public void actionPerformed(ActionEvent e) {
 			if (this.actionCfg.getToCopy()) {
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				StringSelection strSel = new StringSelection(getAppnumber());
+				StringSelection strSel = new StringSelection(getAppnumber(actionCfg.getForceScan()));
 				clipboard.setContents(strSel, null);
 			}
 
 			// links
-			String[] linksStr = actionCfg.getURIs(getAppnumber());
+			String[] linksStr = actionCfg.getURIs(getAppnumber(this.actionCfg.getForceScan()));
 
 			for (int i = 0; i < linksStr.length; i++) {
 				String link = linksStr[i];
 				try {
+					Logger logger = LoggerFactory.getLogger(StartWebApp.class);
+					logger.info("Try to open: " + link);
 					Desktop.getDesktop().browse(new URI(link));
 				} catch (IOException e1) {
 					e1.printStackTrace();
