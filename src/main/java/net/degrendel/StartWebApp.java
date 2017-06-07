@@ -254,7 +254,7 @@ public class StartWebApp {
 		XMLDecoder dec;
 		ActionCfgList actionCfgList = null;
 
-		InputStream inputStream = StartWebApp.class.getClassLoader().getResourceAsStream("res/StartWebApp.cfg");
+		InputStream inputStream = StartWebApp.class.getClassLoader().getResourceAsStream("StartWebApp.cfg");
 
 		dec = new XMLDecoder(new BufferedInputStream(inputStream));
 		actionCfgList = (ActionCfgList) dec.readObject();
