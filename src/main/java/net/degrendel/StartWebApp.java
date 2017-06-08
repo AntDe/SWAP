@@ -343,14 +343,15 @@ public class StartWebApp {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			String appnumber = getAppnumber(actionCfg.getForceScan());
 			if (this.actionCfg.getToCopy()) {
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				StringSelection strSel = new StringSelection(getAppnumber(actionCfg.getForceScan()));
+				StringSelection strSel = new StringSelection(appnumber);
 				clipboard.setContents(strSel, null);
 			}
 
 			// links
-			String[] linksStr = actionCfg.getURIs(getAppnumber(this.actionCfg.getForceScan()));
+			String[] linksStr = actionCfg.getURIs(appnumber);
 
 			for (int i = 0; i < linksStr.length; i++) {
 				String link = linksStr[i];
