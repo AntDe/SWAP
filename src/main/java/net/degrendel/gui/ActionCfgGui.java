@@ -65,7 +65,7 @@ public class ActionCfgGui extends JPanel {
 			}
 		});
 
-		chckbxToCopy = new JCheckBox("to Copy");
+		chckbxToCopy = new JCheckBox("to Clipboard");
 
 		chckbxForceScan = new JCheckBox("Force Scan");
 		GroupLayout groupLayout = new GroupLayout(this);
